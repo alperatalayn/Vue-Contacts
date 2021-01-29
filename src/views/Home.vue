@@ -11,9 +11,8 @@
 // @ is an alias to /src
 import CreateForm from "../components/CreateForm"
 import Contacts from "../components/Contacts"
-import axios from "axios"
+import {deleteContactById,createContact, updateContactById, getContacts} from "../api"
 
-const api_url = "http://127.0.0.1:7000/api/"
 export default {
   name: 'Home',
   components: {
@@ -34,47 +33,31 @@ export default {
         document.getElementById("button").innerHTML=`<i class="fas fa-plus"/>`
       }
     },
-    deleteContact(id){
-      axios.delete(`${api_url}delete/${id}`)
-      .then(res=>{
-        this.contacts.splice(this.contacts.findIndex(x=> x.id===id),1);
-        console.log(res.data);
-        })
-      .catch(err=> console.log(err));
+    async deleteContact(id){
+      await deleteContactById(id)
+      this.contacts.splice(this.contacts.findIndex(x=> x.id===id),1);
     },
-    addContact(contact){
-      const {first_name,last_name,phone}=contact
-      if (this.contacts.some(e => e.first_name === contact.first_name && e.last_name === contact.last_name)) {
-        alert("aynı isimde bir kayıt zaten var")
-      }else{
-      axios.post(`${api_url}create/`,{first_name,last_name,phone})
-      .then(res=>this.contacts=[...this.contacts,res.data])
-      .catch(err=> console.log(err));
-      }
-    },
-    updateContact(contact){
-      
-      const {id,first_name,last_name,phone}=contact
+    async addContact(contact){
       if (this.contacts.some(e => e.first_name === contact.first_name && e.last_name === contact.last_name && e.phone === contact.phone)) {
         alert("aynı isimde bir kayıt zaten var")
       }else{
+        const newContact = await createContact(contact)
+        this.contacts=[...this.contacts,newContact]
+      }
+    },
+    async updateContact(contact){
       
-      axios.post(`${api_url}update/${id}`,{first_name,last_name,phone})
-      .then(res=>{
-        this.contacts.splice(this.contacts.findIndex(x=> x.id===id),1);
-        this.contacts=[...this.contacts,res.data]
-        })
-      .catch(err=> console.log(err));
+      if (this.contacts.some(e => e.first_name === contact.first_name && e.last_name === contact.last_name && e.phone === contact.phone)) {
+        alert("aynı isimde bir kayıt zaten var")
+      }else{
+        const updatedContact = await updateContactById(contact)
+        this.contacts.splice(this.contacts.findIndex(x=> x.id===updatedContact.id),1);
+        this.contacts=[...this.contacts,updatedContact]
       }
     },
   },
-  created() {
-      axios.get(`${api_url}contact-list/`)
-      .then(res=>{
-          if(res.data !== null)
-          this.contacts = res.data
-        })
-      .catch(err=> console.log(err));
+    async created () {
+      this.contacts =  await getContacts()
     },
   data(){
     return {

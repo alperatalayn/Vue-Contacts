@@ -1,56 +1,141 @@
 <template>
   <div class="container">
-   <div class="row">
+    <div class="row">
       <div class="col-md-5 mx-auto">
-         <div id="first">
-            <div class="myform form ">
-               <form @submit="updateContact" name="create">
-                  <div class="form-group">
-                     <label for="first-name">İsim</label>
-                     <input type="text" v-model=first_name class="form-control" id="first-name" placeholder="İsim Girin" required>
+        <div id="first">
+          <div class="myform form">
+            <form @submit="updateContact" name="create">
+              <div class="form-group">
+                <label for="first-name">İsim</label>
+                <input
+                  type="text"
+                  v-model="first_name"
+                  class="form-control"
+                  id="first-name"
+                  placeholder="İsim Girin"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="last-name">Soyisim</label>
+                <input
+                  type="text"
+                  v-model="last_name"
+                  class="form-control"
+                  id="last-name"
+                  placeholder="Soyisim Girin"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefon Numarası</label>
+                <input
+                  type="number"
+                  id="phone"
+                  v-model="phone"
+                  class="form-control"
+                  placeholder="Telefon Numarası Girin"
+                  required
+                />
+              </div>
+              <label>Adres</label>
+              <div class="adresses">
+                <div
+                  class="form-row"
+                  v-for="(adress, index) in adresses"
+                  :key="index"
+                >
+                  <div class="form-group col-md-4">
+                    <label>Başlık</label>
+                    <input
+                      v-model="adress.title"
+                      :name="`adresses[${index}][adress_title]`"
+                      type="text"
+                      class="form-control"
+                      placeholder="Başlık Girin"
+                    />
                   </div>
-                  <div class="form-group">
-                     <label for="last-name">Soyisim</label>
-                     <input type="text" v-model=last_name class="form-control" id="last-name" placeholder="Soyisim Girin" required>
+                  <div class="form-group col-md-6">
+                    <label>Detay</label>
+                    <input
+                      v-model="adress.content"
+                      :name="`adresses[${index}][adress_content]`"
+                      type="text"
+                      class="form-control"
+                      placeholder="Detay Girin"
+                    />
                   </div>
-                  <div class="form-group">
-                     <label for="phone">Telefon Numarası</label>
-                     <input type="number" id="phone" v-model=phone class="form-control" placeholder="Telefon Numarası Girin" required>
-                  </div>
-                  <div class="col-md-12 text-center ">
-                     <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Kaydet</button>
-                  </div>
-               </form>
-            </div>
-         </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button
+                  @click="addAdress"
+                  type="button"
+                  class="btn btn-secondary"
+                >
+                  Adres Ekle
+                </button>
+              </div>
+              <!-- TODO: implement multiple adresses -->
+
+              <div class="form-group">
+                <label for="last-name">İş</label>
+                <input
+                  type="text"
+                  v-model="job"
+                  class="form-control"
+                  id="last-name"
+                  placeholder="İş Girin"
+                />
+              </div>
+              <div class="col-md-12 text-center">
+                <button
+                  type="submit"
+                  class="btn btn-block mybtn btn-primary tx-tfm"
+                >
+                  Kaydet
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-   </div>
-</div>
+    </div>
+  </div>
 </template>
 
 <script>
+import Adress from "../models/AdressModel"
 export default {
    
   name: "UpdateForm",
   methods: {
+     
+    addAdress() {
+      this.adresses.push(new Adress(this.adress_title,this.adress_content))
+    },
     updateContact(e) {
       e.preventDefault();
       const newContact={
          id:this.contact.id,
          first_name:this.first_name,
          last_name:this.last_name,
-         phone: this.phone
+         phone: this.phone,
+         adresses:this.adresses,
+         job:this.job
       }
-      
-      console.log(newContact,"new")
       this.$emit('update-contact',newContact)
     },
   },
   data(){
      return{
+        adress_title:"",
+         adress_content:"",
         first_name:this.contact.first_name,
         last_name:this.contact.last_name,
-        phone:this.contact.phone
+        phone:this.contact.phone,
+        adresses:this.contact.adresses,
+        job:this.contact.job
       }
   },
   props:["contact"]
