@@ -14,7 +14,6 @@ export const getContacts = async () => {
       if (response.statusText !== "OK") {
         throw new Error(response.data.message);
       }
-      console.log(response.data)
       return response.data;
     } catch (err) {
       console.log(err);
@@ -34,7 +33,6 @@ export const createContact = async (contact) => {
       if (response.statusText !== "OK") {
         throw new Error(response.data.message);
       }
-      console.log(response.data)
       return response.data;
     } catch (err) {
       console.log(err);
@@ -53,7 +51,6 @@ export const deleteContactById = async (id) => {
       if (response.statusText !== "OK") {
         throw new Error(response.data.message);
       }
-      console.log(response.data)
       return response.data;
     } catch (err) {
       console.log(err);
@@ -74,7 +71,6 @@ export const updateContactById = async (contact) => {
       if (response.statusText !== "OK") {
         throw new Error(response.data.message);
       }
-      console.log(response.data)
       return response.data;
     } catch (err) {
       console.log(err);

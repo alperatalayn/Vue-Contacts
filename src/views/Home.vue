@@ -46,14 +46,9 @@ export default {
       }
     },
     async updateContact(contact){
-      
-      if (this.contacts.some(e => e.first_name === contact.first_name && e.last_name === contact.last_name && e.phone === contact.phone)) {
-        alert("aynı isimde bir kayıt zaten var")
-      }else{
         const updatedContact = await updateContactById(contact)
         this.contacts.splice(this.contacts.findIndex(x=> x.id===updatedContact.id),1);
         this.contacts=[...this.contacts,updatedContact]
-      }
     },
   },
     async created () {
