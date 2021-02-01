@@ -42,7 +42,7 @@
               <div class="adresses">
                 <div
                   class="form-row"
-                  v-for="(adress, index) in adresses"
+                  v-for="(adress,index) in adresses"
                   :key="index"
                 >
                   <div class="form-group col-md-4">
@@ -112,7 +112,7 @@ export default {
   methods: {
      
     addAdress() {
-      this.adresses.push(new Adress(this.adress_title,this.adress_content))
+        this.adresses.push(new Adress(this.adress_title,this.adress_content))
     },
     updateContact(e) {
       e.preventDefault();
@@ -130,7 +130,7 @@ export default {
   data(){
      return{
         adress_title:"",
-         adress_content:"",
+        adress_content:"",
         first_name:this.contact.first_name,
         last_name:this.contact.last_name,
         phone:this.contact.phone,
