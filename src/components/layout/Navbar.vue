@@ -23,6 +23,7 @@
             <router-link class="nav-link" to="/about">Rehber</router-link>
           </li>
         </ul>
+        <router-link class="nav-link" to="/login"><i class="fas fa-user"></i></router-link>
       </div>
     </nav>
   </div>
@@ -30,6 +31,11 @@
 <script>
 export default {
   name: "Navbar",
+  methods: {
+    showLogin(){
+
+    }
+  },
 };
 </script>
 <style lang="">
