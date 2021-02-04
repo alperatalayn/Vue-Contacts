@@ -47,6 +47,7 @@ export default {
     },
     async updateContact(contact){
         const updatedContact =  await updateContactById(contact)
+        console.log(updatedContact)
         this.contacts.splice(this.contacts.findIndex(x=> x.id===updatedContact.id),1);
         this.contacts=[...this.contacts,updatedContact]
     },

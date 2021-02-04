@@ -16,7 +16,7 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-	(response) => {
+  (response) => {
 		return response;
 	},
 	async function (error) {
@@ -43,22 +43,16 @@ axiosInstance.interceptors.response.use(
 			error.response.statusText === 'Unauthorized'
 		) {
 			const refreshToken = localStorage.getItem('refresh_token');
-
 			if (refreshToken) {
-				const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
+        const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]))
 				const now = Math.ceil(Date.now() / 1000);
-				console.log(tokenParts.exp);
-
 				if (tokenParts.exp > now) {
 					return axiosInstance
-						.post('/token/refresh/', { refresh: refreshToken })
+						.post('token/refresh/', { refresh: refreshToken })
 						.then((response) => {
 							localStorage.setItem('access_token', response.data.access);
-							localStorage.setItem('refresh_token', response.data.refresh);
-
-							axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.access}`;
-							originalRequest.headers['Authorization'] = `Bearer ${response.data.refresh}`;
-
+              axiosInstance.defaults.headers['Authorization'] = `Bearer ${response.data.access}`;
+              originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
 							return axiosInstance(originalRequest);
 						})
 						.catch((err) => {
@@ -99,7 +93,7 @@ export const createContact = async (contact) => {
       const response = axiosInstance
       .post("create/",contact)
       .then((res)=>{
-        if(res.statusText !== "Created")
+        if(res.statusText !== "OK")
         {
 
           throw new Error(res.statusText)
@@ -117,7 +111,7 @@ export const register = async (user) => {
     const response = axiosInstance
     .post("register/",user)
     .then((res)=>{
-      if (res.statusText !== "Created") {
+      if (res.statusText !== "OK") {
         throw new Error(res.data.message);
       }
       return res.data;
@@ -165,16 +159,22 @@ export const deleteContactById = async (id) => {
 }
 export const updateContactById = async (contact) => {
     try {
-      const response = axiosInstance.post(`update/${contact.id}`)
+      const response = axiosInstance.post(`update/${contact.id}`,contact)
       .then((res)=>{
         if (res.statusText !== "OK") {
           throw new Error(res.data.message);
         }
         return res.data;
       })
+      console.log(response)
       return response
     } catch (err) {
       console.log(err);
       return { error: err.response.data.message || err.message };
     }
+}
+export const getUserId=()=>{
+  const token = localStorage.getItem("access_token")
+  const tokenParts = JSON.parse(atob(token.split('.')[1]))
+  return tokenParts.user_id;
 }

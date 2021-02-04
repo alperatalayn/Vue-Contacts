@@ -27,7 +27,7 @@ export default {
     name: "LoginPage",
     methods:{
         async registerHandler(){
-          const user = {username:this.username,password:this.password}
+          const user = {user_name:this.username,password:this.password}
           console.log(user)
           await register(user);
         }

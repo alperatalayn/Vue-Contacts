@@ -1,6 +1,5 @@
 export default class Adress{
-    constructor(id = "" ,title = "",content = ""){
-        this.id = id; 
+    constructor(title = "",content = ""){
         this.title=title;
         this.content=content;
     }
