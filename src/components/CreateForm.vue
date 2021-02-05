@@ -13,7 +13,6 @@
                   class="form-control"
                   id="first-name"
                   placeholder="İsim Girin"
-                  required
                 />
               </div>
               <div class="form-group">
@@ -127,13 +126,13 @@ export default {
   },
   data() {
     return {
-      adress_title:"",
-      adress_content:"",
-      first_name: "",
-      last_name: "",
-      phone: "",
+      adress_title:null,
+      adress_content:null,
+      first_name: null,
+      last_name: null,
+      phone: null,
       adresses: [],
-      job: "",
+      job: null,
     };
   },
 };

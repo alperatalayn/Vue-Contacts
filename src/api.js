@@ -96,14 +96,14 @@ export const createContact = async (contact) => {
         if(res.statusText !== "OK")
         {
 
-          throw new Error(res.statusText)
+          throw new Error(res.data)
         }
-        return res.data;
+        else
+          return res.data;
       })
       return response
     } catch (err) {
-      console.log(err);
-      return { error: err.response.data.message || err.message };
+      console.log(err)
     }
 };
 export const register = async (user) => {

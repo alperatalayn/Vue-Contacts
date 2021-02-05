@@ -13,7 +13,6 @@
                   class="form-control"
                   id="first-name"
                   placeholder="İsim Girin"
-                  required
                 />
               </div>
               <div class="form-group">
