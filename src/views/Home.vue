@@ -4,6 +4,7 @@
     <button id="button" class="add-btn btn-primary rounded-circle border-0" @click="openForm"><i class="fas fa-plus"/></button>
     <CreateForm v-on:add-contact="addContact" v-bind:class="{'active': isFormActive}" class="input-form"/>
     <Contacts v-on:del-contact="deleteContact" v-on:update-contact="updateContact" v-bind:contacts="contacts" class="pt-30"/>
+    <button id="button" class="add-btn btn-primary rounded-circle border-0" @click="getPdf"><i class="fas fa-file-pdf"/></button>
   </div>
 </template>
 
@@ -11,7 +12,7 @@
 // @ is an alias to /src
 import CreateForm from "../components/CreateForm"
 import Contacts from "../components/Contacts"
-import {deleteContactById,createContact, updateContactById, getContacts} from "../api"
+import {deleteContactById,createContact, updateContactById, getContacts, getReport} from "../api"
 
 export default {
   name: 'Home',
@@ -51,6 +52,9 @@ export default {
         this.contacts.splice(this.contacts.findIndex(x=> x.id===updatedContact.id),1);
         this.contacts=[...this.contacts,updatedContact]
     },
+    async getPdf(){
+      await getReport();
+    }
   },
     async created () {
       this.contacts =  await getContacts()

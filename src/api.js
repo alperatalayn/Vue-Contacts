@@ -178,3 +178,21 @@ export const getUserId=()=>{
   const tokenParts = JSON.parse(atob(token.split('.')[1]))
   return tokenParts.user_id;
 }
+export const getReport = async () => {
+    axiosInstance
+    .get("pdf-report/",{
+      responseType: 'arraybuffer',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/pdf'
+      }
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.pdf'); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+})
+.catch((error) => console.log(error));
+}
